@@ -1,14 +1,17 @@
 import './globals.css'
 
+// Types
+import type { ReactNode } from 'react';
+
 export const metadata = {
-  title: 'Next.js and Supabase Starter Kit',
-  description: 'The fastest way to build apps with Next.js and Supabase',
+  title: 'Polylux Flashcards',
+  description: 'Deine Flashcards für die Polylux Prüfung',
 }
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: ReactNode
 }) {
   return (
     <html lang="en">
