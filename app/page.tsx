@@ -1,35 +1,76 @@
-import DeployButton from '../components/DeployButton'
-import AuthButton from '../components/AuthButton'
-import { createClient } from '@/utils/supabase/server'
-import ConnectSupabaseSteps from '@/components/ConnectSupabaseSteps'
-import SignUpUserSteps from '@/components/SignUpUserSteps'
-import Header from '@/components/Header'
-import { cookies } from 'next/headers'
-import {FlashsetData} from "@/app/types";
+// Utils
+import { Suspense } from 'react';
+import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
+import { cookies } from 'next/headers';
 
-export default async function Index() {
-  const cookieStore = cookies()
+// UI
+import { Navigation } from '@/app/components/Navigation';
+import { Skeleton } from '@/app/components/Skeleton';
 
-  const canInitSupabaseClient = () => {
-    try {
-      return createClient(cookieStore);
-    } catch (e) {
-      return false
+// Types
+import { FlashsetData } from '@/app/types/flashcards';
+
+export default async function Home() {
+    const cookieStore = cookies();
+
+    const canInitSupabaseClient = () => {
+        try {
+            return createClient(cookieStore);
+        } catch (e) {
+            return false;
+        }
+    };
+
+    const supabase = canInitSupabaseClient() ? createClient(cookieStore) : null;
+
+    if (!supabase) {
+        return <Skeleton />;
     }
-  }
 
-  const supabase = canInitSupabaseClient() ? createClient(cookieStore) : null;
+    const { data: flashsets } = (await supabase.from('flashsets').select('*, flashcards(*)')) as {
+        data: FlashsetData[];
+    };
 
-  if(!supabase) {
-    return <div>Loading...</div>
-  }
+    return (
+        <div>
+            <Navigation />
 
-  const { data: flashsets } = (await supabase.from('flashsets').select('*, flashcards(*)')) as {
-    data: FlashsetData[];
-  };
-
-  return (
-      <div>TODO...</div>
-  )
-
+            <div className="mx-auto max-w-screen-lg p-3">
+                <Suspense fallback={<Skeleton />}>
+                    <ul
+                        role="list"
+                        className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
+                    >
+                        {flashsets.map((flashset) => (
+                            <li
+                                key={flashset.name}
+                                className="col-span-1 flex rounded-md shadow-sm"
+                            >
+                                <div
+                                    className="flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
+                                    style={{ background: flashset.color }}
+                                >
+                                    AS
+                                </div>
+                                <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
+                                    <div className="flex-1 truncate px-4 py-2 text-sm">
+                                        <Link
+                                            href={flashset.id}
+                                            className="font-medium text-gray-900 hover:text-gray-600"
+                                        >
+                                            {flashset.name}
+                                        </Link>
+                                        <p className="text-gray-500">
+                                            {flashset.flashcards.length} Flashcards
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </Suspense>
+            </div>
+        </div>
+    );
 }
