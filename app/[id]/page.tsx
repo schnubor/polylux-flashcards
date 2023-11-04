@@ -1,5 +1,4 @@
 // Utils
-import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
@@ -8,6 +7,7 @@ import { notFound } from 'next/navigation';
 // UI
 import { Navigation } from '@/app/components/Navigation';
 import { Skeleton } from '@/app/components/Skeleton';
+import { Card } from '@/app/[id]/components/Card';
 
 // Types
 import { FlashsetData } from '@/app/types/flashcards';
@@ -40,11 +40,11 @@ export default async function Flashset({ params }: { params: { id: string } }) {
 
     return (
         <div>
-            <Navigation />
+            <Navigation title={flashset.name} />
 
-            <div className="mx-auto max-w-screen-lg p-3">
+            <div className="mx-auto max-w-screen-lg p-6">
                 <Suspense fallback={<Skeleton />}>
-                    <h1>{flashset.name}</h1>
+                    <Card {...flashset.flashcards[0]} />
                 </Suspense>
             </div>
         </div>
