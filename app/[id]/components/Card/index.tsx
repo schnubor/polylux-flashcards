@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import Tilt from 'react-parallax-tilt';
 
 // Types
-import { FlashcardData } from '@/app/types/flashcards';
+import type { FlashcardData } from '@/app/types/flashcards';
 
 export function Card({ card }: { card?: FlashcardData }) {
     const [flipped, setFlipped] = useState(true);
@@ -37,7 +37,8 @@ export function Card({ card }: { card?: FlashcardData }) {
         <Tilt
             tiltMaxAngleX={5}
             tiltMaxAngleY={5}
-            className="aspect-card mx-auto w-full max-w-2xl sm:aspect-[4/3]"
+            className="aspect-card preserve-3d mx-auto w-full max-w-2xl sm:aspect-[4/3]"
+            gyroscope={true}
         >
             <a.div
                 className={clsx(cardClass, 'border-sky-200 from-sky-100 to-sky-50')}
