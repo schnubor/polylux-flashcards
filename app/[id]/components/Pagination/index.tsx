@@ -3,6 +3,9 @@
 // UI
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 
+// Utils
+import clsx from 'clsx';
+
 // Hooks
 import { useSearchParams, useRouter } from 'next/navigation';
 
@@ -35,16 +38,33 @@ export function Pagination({ cards, setId }: { cards: FlashcardData[]; setId: st
     };
 
     return (
-        <div className="mt-4 flex justify-center space-x-4">
+        <div className="mt-6 flex items-center justify-center space-x-4 sm:mt-12">
             <button
-                className="rounded-lg bg-stone-100 p-2 shadow-lg hover:bg-stone-200 focus:outline-none"
+                className={clsx(
+                    'rounded-lg bg-sky-100 p-2 text-sky-600 shadow-md hover:bg-sky-200 focus:outline-none',
+                    {
+                        'cursor-not-allowed opacity-50': currentIndex === 0,
+                        'hover:bg-stone-200': currentIndex !== 0,
+                    },
+                )}
                 onClick={handlePrevClick}
                 disabled={currentIndex === 0}
             >
                 <ChevronLeftIcon className="h-5 w-5" />
             </button>
+
+            <div className="text-sm text-stone-500">
+                Karte {currentIndex + 1} von {cards.length}
+            </div>
+
             <button
-                className="rounded-lg bg-stone-100 p-2 shadow-lg hover:bg-stone-200 focus:outline-none"
+                className={clsx(
+                    'rounded-lg bg-sky-100 p-2 text-sky-600 shadow-md hover:bg-sky-200 focus:outline-none',
+                    {
+                        'cursor-not-allowed opacity-50': currentIndex === cards.length - 1,
+                        'hover:bg-stone-200': currentIndex !== cards.length - 1,
+                    },
+                )}
                 onClick={handleNextClick}
                 disabled={currentIndex === cards.length - 1}
             >
