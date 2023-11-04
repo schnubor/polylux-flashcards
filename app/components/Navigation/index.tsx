@@ -4,7 +4,7 @@ import Link from 'next/link';
 // UI
 import { CardStackIcon } from '@radix-ui/react-icons';
 
-export function Navigation({ title }: { title: string }) {
+export function Navigation({ title }: { title?: string }) {
     return (
         <nav className="mx-auto flex h-16 w-full max-w-screen-lg justify-start">
             <div className="flex w-full items-center justify-between p-6 text-sm text-foreground md:max-w-4xl lg:max-w-screen-lg xl:max-w-screen-xl">
