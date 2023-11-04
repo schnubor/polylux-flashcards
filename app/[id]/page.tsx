@@ -8,11 +8,18 @@ import { notFound } from 'next/navigation';
 import { Navigation } from '@/app/components/Navigation';
 import { Skeleton } from '@/app/components/Skeleton';
 import { Card } from '@/app/[id]/components/Card';
+import { Pagination } from '@/app/[id]/components/Pagination';
 
 // Types
-import { FlashsetData } from '@/app/types/flashcards';
+import type { FlashsetData } from '@/app/types/flashcards';
 
-export default async function Flashset({ params }: { params: { id: string } }) {
+export default async function Flashset({
+    params,
+    searchParams,
+}: {
+    params: { id: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+}) {
     const cookieStore = cookies();
 
     const canInitSupabaseClient = () => {
@@ -38,13 +45,19 @@ export default async function Flashset({ params }: { params: { id: string } }) {
 
     const flashset = flashsets[0];
 
+    const cardId = searchParams.card as string;
+    const currentCard = cardId
+        ? flashset.flashcards.find((card) => card.id === cardId)
+        : flashset.flashcards[0];
+
     return (
         <div>
             <Navigation title={flashset.name} />
 
             <div className="mx-auto max-w-screen-lg p-6">
                 <Suspense fallback={<Skeleton />}>
-                    <Card {...flashset.flashcards[0]} />
+                    <Card card={currentCard} />
+                    <Pagination cards={flashset.flashcards} setId={flashset.id} />
                 </Suspense>
             </div>
         </div>
