@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation';
 // UI
 import { Navigation } from '@/app/components/Navigation';
 import { Skeleton } from '@/app/components/Skeleton';
-import { Card } from '@/app/[id]/components/Card';
+import { CardStack } from '@/app/[id]/components/CardStack/CardStack';
 import { Pagination } from '@/app/[id]/components/Pagination';
 
 // Types
@@ -56,7 +56,7 @@ export default async function Flashset({
 
             <div className="mx-auto max-w-screen-lg p-6">
                 <Suspense fallback={<Skeleton />}>
-                    <Card card={currentCard} />
+                    <CardStack cards={flashset.flashcards} />
                     <Pagination cards={flashset.flashcards} setId={flashset.id} />
                 </Suspense>
             </div>

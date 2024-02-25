@@ -50,7 +50,7 @@ export function Pagination({ cards, setId }: { cards: FlashcardData[]; setId: st
                 onClick={handlePrevClick}
                 disabled={currentIndex === 0}
             >
-                <ChevronLeftIcon className="h-5 w-5" />
+                <ChevronLeftIcon className="size-5" />
             </button>
 
             <div className="text-sm text-stone-500">
@@ -68,7 +68,7 @@ export function Pagination({ cards, setId }: { cards: FlashcardData[]; setId: st
                 onClick={handleNextClick}
                 disabled={currentIndex === cards.length - 1}
             >
-                <ChevronRightIcon className="h-5 w-5" />
+                <ChevronRightIcon className="size-5" />
             </button>
         </div>
     );
